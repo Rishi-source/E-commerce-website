@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+<style>
+    th {
+        width: 30%;
+    }
+</style>
+{% endblock %}
+
+{% block myblock %}
+<div class="container-fluid" style="background:url('/static/images/c1.jpg');background-size:100% 100%;">
+    <div class="row py-5" style="background:rgba(0,0,0,0.5)">
+        <div class="col-md-12 py-5 my-5 text-light text-center font-weight-bold text-uppercase">
+            <h1>Order Details</h1>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row py-4">
+        <div class="col-md-8">
+            <div class="text-center py-4">
+                <img src="/media/{{ product.product_image }}" alt="No Image" style="height:300px;width:80%;">
+            </div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>PRODUCT ID</th>
+                        <td>{{ product.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>PRODUCT NAME</th>
+                        <td>{{ product.product_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Market Price</th>
+                        <td><del>&#8377;{{ product.product_price }}</del></td>
+                    </tr>
+                    <tr>
+                        <th>Offered Price</th>
+                        <td>
+                            &#8377;{{ product.sale_price }}
+                            <script>
+                                let t = "{{ product.product_price }}";
+                                let s = "{{ product.sale_price }}";
+                                let dis = 100 - ((s / t) * 100);
+                                document.write("<strong class='text-danger'>(" + Math.round(dis, 2) + "%)</strong>");
+                            </script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Product Description</th>
+                        <td>{{ product.details }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Seller Details</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                            <th>First name</th>
+                            <td>
+                                <a href="{% url 'seller_profile' %}?sid={{ product.seller.id }}">{{ product.seller.first_name }}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Last name</th>
+                            <td>{{ product.seller.last_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{{ product.seller.email }}</td>
+                        </tr>
+                        <tr>
+                            <th>Member Since</th>
+                            <td>{{ product.seller.date_joined }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <h4 class="alert alert-secondary">Order Details</h4>
+            <table class="table">
+                <tr>
+                    <th>Invoice</th>
+                    <td>{{ order.invoice_id }}</td>
+                </tr>
+                <tr>
+                    <th>Order was placed on</th>
+                    <td>{{ order.processed_on }}</td>
+                </tr>
+                <tr>
+                    <th>Order Status</th>
+                    <td>
+                        {% if order.status %}
+                        <button class="btn btn-success btn-block"><i class="fa fa-check"></i> Success</button>
+                        {% else %}
+                        <button class="btn btn-danger btn-block">&times; Pending</button>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

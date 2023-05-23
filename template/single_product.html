@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<style>
+    th{
+    width:30%;
+}
+</style>
+{% endblock %}
+{% block myblock %}
+    <div class="container-fluid" style="background:url('/static/images/c1.jpg');background-size:100% 100%;">
+        <div class="row py-5" style="background:rgba(0,0,0,0.5)">
+            <div class="col-md-12 py-5 my-5 text-light text-center font-weight-bold text-uppercase">
+                <h1>Product Details</h1>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row py-4">
+            <div class="col-md-8 ">
+                <div class=" text-center py-4">
+                    <img src="/media/{{product.product_image}}" alt="No Image" style="height:300px;width:80%;">
+                </div>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>PRODUCT ID</th>
+                            <td>{{product.id}}</td>
+                            <form action="{% url 'table' %}" method="GET">
+                                <input type="hidden" value="{{product.id}}" name="pid">
+                            </form>
+
+                        </tr>
+                        <tr>
+                            <th>PRODUCT NAME</th>
+                            <td>{{product.product_name}}</td>
+                        </tr>
+                        <tr>
+                            <th> Market Price</th>
+                            <td><del>&#8377;{{product.product_price}}</del></td>
+                        </tr>
+                        <tr>
+                            <th> Offered Price</th>
+                            <td>&#8377;{{product.sale_price}}
+                                <script>
+                                    let t = "{{product.product_price}}";
+                                    let s = "{{product.sale_price}}";
+                                    let dis = 100-((s/t)*100);
+                                    document.write("<strong class='text-danger'>("+Math.round(dis,2)+"%)</strong>");
+                                </script>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th> Product Description</th>
+                            <td>{{product.details}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Seller Details</h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>First name</th>
+                                <td><a href = "{% url 'seller_profile' %}?sid={{product.seller.id}}"  >{{product.seller.first_name}}</a></td>
+                            </tr>
+                            <tr>
+                                <th>Last name</th>
+                                <td>{{product.seller.last_name}}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{{product.seller.email}}</td>
+                            </tr>
+                            <tr>
+                                <th>Member Since: </th>
+                                <td>{{product.seller.date_joined}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <h4 class="alert alert-secondary">Category Details</h4>
+                <table class="table">
+                    <tr>
+                        <th>Category ID</th>
+                        <td>{{product.product_category.id}}</td>
+                    </tr>
+                    <tr>
+                        <th>Category Name</th>
+                        <td>{{product.product_category.cat_name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Category Image</th>
+                        <td>
+                            <img src="/media/{{product.product_category.cover_pic}}" style="width: 200px;height:150px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Category Description</th>
+                        <td>
+                            {{product.product_category.description}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center">Product Review</h2>
+            <h4 class="text-center"><em>Total: {{data |length}}</em></h4>
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Review</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in data %}
+                        <tr>
+                            <td>{{i.name}}</td>
+                            <td>{{i.review}}</td>
+                            <td>{{i.time}}</td>
+                        </tr>
+                    {% endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

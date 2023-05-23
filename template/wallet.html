@@ -1,0 +1,49 @@
+{% extends "dashboard_base.html" %}
+{% block head %}
+<style>
+    form .row{
+        margin-top:2%;
+    }
+</style>
+{% endblock %}
+{% load static %}
+{% block dashboard %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>MY WALLET</h3>
+                    </div>
+                    <div class="card-body">
+                        <h3>MY WALLET BALANCE : &#8377 {{wallet.wallet_balance}} </h3>
+
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <label  for="">ADD MONEY TO WALLET</label>
+                                    <br>
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+                                <br>              
+                                <div class="col-md-8">
+                                    <input type="number" name="balance3" class="form-control" placeholder="Enter the amount you want to add...">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="submit" class="btn btn-warning" value="ADD MONEY">
+                                </div>
+                            </div>
+                            </form>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'dashboard_base.html' %}
+{% block head %}
+<style>
+    .bg-img{
+    background:url("/static/images/cover.jpg");
+}
+</style>
+{% endblock %}
+{% block dashboard %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 bg-img py-5 text-center text-light">
+            <h1>Dashboard &gt; Order History</h1>
+        </div>
+        {% for i in order_history %}
+        {% for j in i.products %}
+        <div class="col-md-12 alert alert-primary">
+                <div class="card my-5">
+                    <div class="card-header">
+                        <strong class="float-left">Order ID: {{i.order_id}}</strong>
+                        <em class="float-right">Processed On: {{i.date}}</em>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-hover table-striped">
+                            <tr>
+                                <td>
+                                    <img src="/media/{{j.product_image}}" style="height:100px;width:200px;" alt="No Image">
+                                </td>
+                                <td><h4>{{j.product_name}}</h4></td>
+                                <td>&#8377; {{j.sale_price}}</td>
+                                <td><a href="{% url 'OrderDetail' %}?oid={{i.order_id}}&pid={{j.id}}" target="_blank" class="btn btn-success"><i class="fa fa-eye"></i> View</a></td>
+                                <td><a href="{% url 'Review' %}?pid={{j.id}}" target="_blank" class="btn btn-success"><i class="fa fa-eye"></i> Review</a></td>
+
+                            </tr>
+                    
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <table class="table">
+                            <tr>
+                                <th>INVOICE ID</th>
+                                <td>{{i.invoice}}</td>
+                                <th>STATUS</th>
+                                <td>
+                                    {% if i.status %}
+                                        <button class="btn btn-success btn-block"><i class="fa fa-check"></i> Success</button>
+                                    {% else %}
+                                        <button class="btn btn-danger btn-block" >&times; Pending</button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

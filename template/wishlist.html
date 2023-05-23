@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<style>
+    .cart td{
+        width:20%;
+    }
+</style>
+{% endblock %}
+{% block myblock %}
+{% if user.is_superuser %}
+    <h1 class="jumbotron my-3">YOU ARE NOT ALLOWED HERE</h1>
+{% else %}
+    {% if items|length == 0 %}
+        <div class="container-fluid">
+            <div class="jumbotron alert alert-danger">
+                &times; Your Wishlist is empty !!! 
+            </div>
+        </div>
+    {% else %}
+        <div class="container-fluid" style="background:url('/static/images/c1.jpg');background-size:100% 100%;">
+            <div class="row py-5" style="background:rgba(0,0,0,0.5)">
+                <div class="col-md-12 py-5 my-2 text-light text-center font-weight-bold text-uppercase">
+                    {% if status %}
+                        <h1>{{status}}</h1>
+                    {% else %}
+                        <h1>My Wishlist ({{items|length}})</h1>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% if user.is_authenticated %}
+            {% if status %}
+                <script>
+                    alert("{{status}}");
+                    window.location="/wishlist"
+                </script>
+            {% endif %}
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-9 my-5" >
+                        <div style="box-shadow:0px 0px 10px gray;">
+                            {% if msz %}
+                                <div class="{{cls}} mt-3">{{msz}}</div>
+                            {% endif %}
+
+                            <table class="table cart">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Product Name</th>
+                                        <th>Product Price</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in items %}
+                                        <tr id="row{{i.id}}">
+                                            <td><img src="/media/{{i.product.product_image}}" style="height:100px;width:150px;"></td>
+                                            <td>{{i.product.product_name}}</td>
+                                            <td>&#8377;<del id="pp{{i.id}}">{{i.product.product_price}}</del> &#8377; <span id="sp{{i.id}}"> {{i.product.sale_price}}</span></td>
+                                            <td> 
+                                            <form action="{% url 'cart' %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" value="{{i.id}}" name="pid">
+                                                <input type="hidden" value="1" name="qty">
+                                                <button type="submit" class="btn btn-success btn-block">
+                                                 <i class="fa fa-shopping-cart"></i>
+                                                    Move To Cart
+                                                </button>    
+                                            </form>
+                                          </td> 
+                                     </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endif %}
+{% endblock %}
